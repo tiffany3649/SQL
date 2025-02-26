@@ -1,4 +1,4 @@
-#This project utilizes the following Fortune 500 Analysis data:
+#This analysis utilizes the following Fortune 500 dataset:
 
 CREATE TABLE fortune_companies (
     company_id INTEGER PRIMARY KEY,
@@ -58,8 +58,13 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
+## Analysis:
 
-##Categorized companies based on their maternity leave policies using a CASE statement. Companies offering more than 12 weeks of maternity leave are labeled as 'Extended Leave,' those providing exactly 12 weeks fall under 'Standard Leave,' and those offering less than 12 weeks are classified as 'Limited Leave.' 
+select*
+from fortune_companies;
+
+
+--Categorized companies based on their maternity leave policies as 'Extended Leave,'Standard Leave,'Limited Leave.' 
 select company_name, maternity_leave_weeks,
 case 
 when maternity_leave_weeks >12 then "Extended Leave"
@@ -68,6 +73,22 @@ else "Limited Leave (Less than 12 weeks)"
 end as Leave_Category
 from fortune_companies;
 
+--Which industries have an average revenue of at least $200 Billion, and what are their avg revenues?
+select industry, round(avg(revenue),1) as avg_revenue_billions
+from fortune_companies
+group by industry
+having avg_revenue_billions >= 200 ;
+
+--Which companies have healthcare benefits *and* at least 20 paid time off days?
+select company_name, healthcare_benefits, paid_time_off_days
+from fortune_companies
+where healthcare_benefits = 1
+and paid_time_off_days >= 20;
+
+--Which company in the Retail industry has the least revenue, and what's their revenue?
+select company_name, industry, min(revenue)
+from fortune_companies
+where industry = 'Retail';
 
 
 
